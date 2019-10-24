@@ -48,7 +48,7 @@ class User extends Authenticatable
         $exist = $this->is_following($userId);
         // 相手が自分自身ではないかの確認
         $its_me = $this->id == $userId;
-    
+
         if ($exist || $its_me) {
             // 既にフォローしていれば何もしない
             return false;
@@ -86,5 +86,46 @@ class User extends Authenticatable
         $follow_user_ids = $this->followings()->pluck('users.id')->toArray();
         $follow_user_ids[] = $this->id;
         return Micropost::whereIn('user_id', $follow_user_ids);
+    }
+    
+    public function favorites() //　所属指定 自分 ⇨　Microposts
+    {
+        return $this->belongsToMany(Micropost::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
+    }
+    
+    public function favorite($micropostId)
+    {
+        //　既にいいねしているかの確認
+        $exist = $this->is_favorites($micropostId);
+
+        if ($exist == true) {
+            //　既にいいねしていれば何もしない
+            return false;
+        } else {
+            //  いいねがまだならいいね登録
+            $this->favorites()->attach($micropostId);
+            return true;
+        }
+        
+    }
+    
+    public function un_favorite($micropostId)
+    {
+        //　既にいいねしているかの確認
+        $exist = $this->is_favorites($micropostId);
+        
+        if ($exist == true) {
+            //　既にいいねしていたら、いいねを外す
+            $this->favorites()->detach($micropostId);
+            return true;
+        } else {
+            //  いいねしていなかったら何もしない
+            return false;
+        }
+    }
+    
+    public function is_favorites($micropostId)  //　いいね登録ずみかの検証作業
+    {
+        return $this->favorites()->where('micropost_id', $micropostId)->exists();
     }
 }
