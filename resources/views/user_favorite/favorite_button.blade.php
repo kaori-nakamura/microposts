@@ -1,5 +1,5 @@
 @if (Auth::id() != $user->id)
-    @if (Auth::user()->is_beFavorites($micropost->id))
+    @if (Auth::user()->is_favorites($micropost->id))
         {!! Form::open(['route' => ['favorites.unfavorite', $micropost->id], 'method' => 'delete']) !!}
             {!! Form::submit('Unfavorite', ['class' => "btn btn-danger"]) !!}
         {!! Form::close()!!}
