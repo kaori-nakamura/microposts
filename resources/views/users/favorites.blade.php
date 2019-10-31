@@ -14,13 +14,18 @@
             @include('user_follow.follow_button', ['user' => $user])
         </aside>
         <div class="col-sm-8">
-            <ul class="nav nav-tabs nav-justified mb-3">
-                <li class="nav-item"><a href="{{ route('users.show', ['id' => $user->id]) }}" class="nav-link {{ Request::is('users/' . $user->id) ? 'active' : '' }}">TimeLine <span class="badge badge-secondary">{{ $count_microposts }}</span></a></li>
-                <li class="nav-item"><a href="{{ route('users.followings', ['id' => $user->id]) }}" class="nav-link {{ Request::is('users/*/followings') ? 'active' : '' }}">Followings <span class="badge badge-secondary">{{ $count_followings }}</span></a></li>
-                <li class="nav-item"><a href="{{ route('users.followers', ['id' => $user->id]) }}" class="nav-link {{ Request::is('users/*/followers') ? 'active' : '' }}">Followers <span class="badge badge-secondary">{{ $count_followers }}</span></a></li>
-                <li class="nav-item"><a href="{{ route('users.favorites', ['id' => $user->id]) }}" class="nav-link {{ Request::is('favorites/*/favorites') ? 'active' : '' }}">Favorites <span class="badge badge-secondary">{{ $count_favorites }}</span></a></li>
-            </ul>
-            @include('users.users', ['users' => $users])
+            @include('users.navtabs', ['user' => $user])
+            @foreach ($users as $user)
+                <li class="media mb-3">
+                    <img class="mr-2 rounded" src="{{ Gravatar::src($user->email, 50) }}" alt="">
+                <div>
+                    {!! link_to_route('users.show', $user->user->name, ['id' => $user->user->id]) !!} <span class="text-muted">posted at {{ $user->created_at }}</span>
+                </div>
+                <div>
+                    <p class="mb-0"></p>
+                </div>
+                </li>
+            @endforeach
         </div>
     </div>
 @endsection
