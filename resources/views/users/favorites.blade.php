@@ -15,17 +15,11 @@
         </aside>
         <div class="col-sm-8">
             @include('users.navtabs', ['user' => $user])
-            @foreach ($users as $user)
-                <li class="media mb-3">
-                    <img class="mr-2 rounded" src="{{ Gravatar::src($user->email, 50) }}" alt="">
-                <div>
-                    {!! link_to_route('users.show', $user->user->name, ['id' => $user->user->id]) !!} <span class="text-muted">posted at {{ $user->created_at }}</span>
-                </div>
-                <div>
-                    <p class="mb-0"></p>
-                </div>
-                </li>
-            @endforeach
+            <ul class="media-list">
+                @if (count($microposts) > 0)
+                    @include('microposts.microposts', ['microposts' => $microposts])
+                @endif
+            </ul>
         </div>
     </div>
 @endsection
