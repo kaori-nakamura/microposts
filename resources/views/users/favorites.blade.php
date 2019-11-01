@@ -15,11 +15,7 @@
         </aside>
         <div class="col-sm-8">
             @include('users.navtabs', ['user' => $user])
-            <ul class="media-list">
-                @if (count($microposts) > 0)
-                    @include('microposts.microposts', ['microposts' => $microposts])
-                @endif
-            </ul>
+            @include('microposts.microposts', ['microposts' => $microposts])
         </div>
     </div>
 @endsection

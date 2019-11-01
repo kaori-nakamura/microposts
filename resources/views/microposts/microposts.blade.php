@@ -9,15 +9,14 @@
                 <div>
                     <p class="mb-0">{!! nl2br(e($micropost->content)) !!}</p>
                 </div>
-                <div>
-                    @if (Auth::id() == $micropost->user_id)
-                        {!! Form::open(['route' => ['microposts.destroy', $micropost->id], 'method' => 'delete']) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                        {!! Form::close() !!}
-                    @else
-                        @include('user_favorite.favorite_button', ['user' => $user])
-                    @endif
-                </div>
+                <div class="ml-0 row">
+                        @if (Auth::id() == $micropost->user_id)
+                            {!! Form::open(['route' => ['microposts.destroy', $micropost->id], 'method' => 'delete']) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::close() !!}
+                        @endif                   
+                        @include('user_favorite.favorite_button')
+                </div>    
             </div>
         </li>
     @endforeach
